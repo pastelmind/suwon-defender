@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="lib/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript">
+
+/* global $ */
+
+$(function () {
+  $('img').click(function (event) {
+    $('#output').text(
+      $('#output').text() + '\n' + event.pageX + ',' + event.pageY + ','
+    );
+    $('<div class="dot">').css({
+      left: event.pageX - 1,
+      top: event.pageY - 1
+    }).appendTo(document.body);
+  });
+});
+
+    </script>
+    <style type="text/css">
+
+textarea {
+  height: 300px;
+}
+
+.dot {
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  background-color: red;
+}
+
+    </style>
+    <title>Image Map Maker</title>
+  </head>
+  <body>
+    <img src="images/maps/suwon-map.jpg">
+    <textarea id="output"></textarea>
+  </body>
+</html>

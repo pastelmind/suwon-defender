@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="MSThemeCompatible" content="yes">
+
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css" />
+    <style type="text/css">
+
+#wind_direction_arrow {
+  display: block;
+  position: relative;
+  background-color: #ffd;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(SizingMethod='auto expand')";
+  border: 1px solid black;
+  width: 150px;
+  height: 180px;
+}
+
+#output {
+  width: 20em;
+  height: 10em;
+}
+
+    </style>
+
+    <script type="text/javascript" src="lib/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+
+/* global $ */
+
+
+var WindStats = {
+  arrowSpinTimeout: null,
+
+  spinArrow: function () {
+    //Test if arrow is already spinning
+    if (this.arrowSpinTimeout === null) {
+      var $arrow = $('#wind_direction_arrow');
+      var angle = $arrow.data('angle') || 0;
+
+      angle += 5; // 1turn/sec
+      if (angle >= 360)
+        angle -= 360;
+
+      this.rotateArrow($arrow, angle);
+      $('#wind_direction').val(angle);
+
+      var self = this;
+      this.arrowSpinTimeout = setTimeout(function () {
+        self.arrowSpinTimeout = null;
+        self.spinArrow();
+      }, 30); //Expect 40FPS
+    }
+  },
+
+  stopArrow: function () {
+    clearTimeout(this.arrowSpinTimeout);
+    this.arrowSpinTimeout = null;
+  },
+
+  isSpinning: function () {
+    return this.arrowSpinTimeout !== null;
+  },
+
+  rotateArrow: function ($arrow, degrees) {
+    $arrow = $($arrow).data('angle', degrees);
+
+    //IE fix
+    if ($arrow[0].filters) {
+      var matrixFilter = $arrow[0].filters.item('DXImageTransform.Microsoft.Matrix');
+      var radians = degrees * Math.PI / 180;
+      var cos = Math.cos(radians);
+      var sin = Math.sin(radians);
+      matrixFilter.M11 = cos;
+      matrixFilter.M12 = -sin;
+      matrixFilter.M21 = sin;
+      matrixFilter.M22 = cos;
+
+      // var w1 = 200, h1 = 200,
+      //     w2 = Math.round(w1 * Math.abs(cos) + h1 * Math.abs(sin)),
+      //     h2 = Math.round(w1 * Math.abs(sin) + h1 * Math.abs(cos));
+
+      // var offsetX = (w1 - w2) / 2, offsetY = (h1 - h2) / 2;
+      var offsetX = ($arrow[0].clientWidth - $arrow[0].offsetWidth) / 2,
+          offsetY = ($arrow[0].clientHeight - $arrow[0].offsetHeight) / 2;
+
+      $arrow[0].style.left = offsetX + 'px';
+      $arrow[0].style.top = offsetY + 'px';
+    }
+    else {
+      $arrow.css('transform', 'rotate(' + degrees + 'deg)');
+    }
+
+    $('#output').text(this.reportDimensions($arrow));
+  },
+
+  reportDimensions: function ($arrow) {
+    var elem = $($arrow)[0];
+    var output = '';
+
+    output += 'offsetWidth / offsetHeight : '
+            + elem.offsetWidth + ', ' + elem.offsetHeight;
+
+    var rect = elem.getBoundingClientRect();
+    output += '\nBoundingClientRect size : '
+            + (rect.right - rect.left) + ', ' + (rect.bottom - rect.top);
+
+    output += '\nclientWidth / clientHeight : '
+            + elem.clientWidth + ', ' + elem.clientHeight;
+
+    output += '\nscrollWidth / scrollHeight : '
+            + elem.scrollWidth + ', ' + elem.scrollHeight;
+
+    return output;
+  }
+};
+
+$(function () {
+  $('#wind_direction_arrow').click(function () {
+    if (WindStats.isSpinning())
+      WindStats.stopArrow();
+    else
+      WindStats.spinArrow();
+  })
+});
+
+    </script>
+
+    <title>Wind Stats</title>
+  </head>
+  <body>
+    <div id="map">
+      <div id="wind_stats">
+        <img id="wind_direction_arrow" src="images/arrow.png">
+        <input id="wind_direction" type="text">
+        <textarea id="output"></textarea>
+      </div>
+    </div>
+  </body>
+</html>

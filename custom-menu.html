@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="MSThemeCompatible" content="yes">
+
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css" />
+    <style type="text/css">
+
+.menu {
+  border: 1px solid blue;
+}
+
+.menu-item {
+ border: 1px solid green;
+}
+
+    </style>
+
+    <script type="text/javascript" src="lib/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+
+/* global $ */
+
+$(function () {
+  $(document).on('click', function (event) {
+    if (!$(event.target).closest('.menu').length)
+      closeMenu('.menu-item .menu');
+  });
+
+  createTestMenu('#menu_bar');
+});
+
+function closeMenu($menu) {
+  return $($menu).find('.menu-item .menu').addBack('.menu-item .menu').hide();
+}
+
+function createTestMenu($menu) {
+  $menu = $($menu);
+
+  $menu.find('ul').addBack('ul').addClass('menu')
+    .find('li').addClass('menu-item');
+
+  $menu.find('.menu-item').click(function () {
+    //Open sub-menu
+    $(this).find('.menu').first().toggle();
+  });
+
+  closeMenu($menu);
+
+  return $menu;
+}
+
+function makeMenu($menu) {
+
+}
+
+    </script>
+    <script type="text/javascript" src="data/imagemap.js"></script>
+
+    <title>Suwon Defender</title>
+  </head>
+  <body>
+    <div id="menu_bar">
+      <ul>
+        <li>Menu1
+          <ul>
+            <li>Submenu1</li>
+            <li>Submenu2</li>
+          </ul>
+        </li>
+        <li>Menu2</li>
+        <li>Menu3</li>
+        <li>Menu4</li>
+        <li>Menu5
+          <ul>
+            <li>Submenu1</li>
+            <li>Submenu2</li>
+            <li>Submenu3</li>
+            <li>Submenu4</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="MSThemeCompatible" content="yes">
+    <meta charset="UTF-8">
+    <title>IE 전용 필터 효과 테스트</title>
+
+
+    <style type="text/css">
+
+.map {
+  position: relative;
+  height: 500px;
+  border: 1px dashed black;
+}
+
+.chroma {
+  /**
+   * Chroma:
+   * 특정 색깔의 픽셀을 투명하게 만든다.
+   * 배경색이 투명하지 않은(흰색, 검정색 등) 그림의 배경색을 없앨 수 있다.
+   */
+  filter: progid:DXImageTransform.Microsoft.Chroma(Color=black);
+}
+
+.glow {
+  /**
+   * Glow:
+   * 그림의 가장자리에 오오라 효과를 넣는다.
+   * 배경색이 투명한 그림은 투명하지 않은 부분에 오오라가 붙는다.
+   */
+  filter: progid:DXImageTransform.Microsoft.Glow(Color=blue,Strength=5);
+}
+
+.chroma-and-glow {
+  /**
+   * 이렇게 조합하면 배경이 투명하지 않은 그림도 자연스럽게 투명+오오라 효과 적용 가능
+   */
+  filter: progid:DXImageTransform.Microsoft.Chroma(Color=black)
+          progid:DXImageTransform.Microsoft.Glow(Color=blue,Strength=5);
+}
+
+.mask {
+  /**
+   * Mask:
+   * 그림으로부터 마스크를 만든다.
+   * 투명한 픽셀을 지정한 색깔로 덮어씌우고, 투명하지 않은 픽셀을 전부 투명하게 변함.
+   */
+  filter: progid:DXImageTransform.Microsoft.MaskFilter(color=yellow);
+}
+
+.alpha {
+  /**
+   * Alpha:
+   * 0~100 사이의 투명도를 설정한다.(0=투명, 100=불투명)
+   */
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=60);
+}
+
+.overlay {
+  /**
+   * 이렇게 응용하면 원본 그림을 예쁘게 덮어씌우는 셀로판지 효과를 낼 수 있다.
+   */
+  filter: progid:DXImageTransform.Microsoft.MaskFilter()
+          progid:DXImageTransform.Microsoft.MaskFilter(color=#ff7777)
+          progid:DXImageTransform.Microsoft.Alpha(opacity=60);
+  z-index: 100;
+}
+
+.overlay-2 {
+  /**
+   * 배경색이 투명하지 않아도 셀로판지를 만들 수 있다.
+   */
+  filter: progid:DXImageTransform.Microsoft.Chroma(Color=black)
+          progid:DXImageTransform.Microsoft.MaskFilter()
+          progid:DXImageTransform.Microsoft.MaskFilter(color=#00ff00)
+          progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+  z-index: 200;
+}
+
+.smaller {
+  width:  400px;
+  height: 300px;
+}
+
+.overlap {
+  position: absolute;
+}
+
+.position-1 {
+}
+
+.position-2 {
+  top:  100px;
+  left: 75px;
+}
+
+.position-3 {
+  top: 20px;
+  left: 150px;
+}
+
+    </style>
+    <script type="text/javascript">
+
+window.onload = function () {
+  var documentModeStr = 'compatMode : ' + document.compatMode;
+  if (document.compatMode === 'BackCompat')
+    documentModeStr += '(not standards-compliant)';
+  if (document.compatMode === 'CSS1Compat')
+    documentModeStr += '(standards-compliant)';
+
+  documentModeStr += '<br>documentMode : ' + document.documentMode;
+  switch (document.documentMode) {
+    case 0: documentModeStr += '(not determined yet)'; break;
+    case 5: documentModeStr += '(IE5 mode(quirks mode))'; break;
+    case 7: documentModeStr += '(IE7 standards mode)'; break;
+    case 8: documentModeStr += '(IE8 standards mode)'; break;
+    case 9: documentModeStr += '(IE9 standards mode)'; break;
+    case 10: documentModeStr += '(IE10 standards mode)'; break;
+  }
+
+  document.getElementById('browser_css_mode').innerHTML = documentModeStr;
+};
+
+    </script>
+  </head>
+  <body style="font-family:verdana; font-size:8pt">
+
+<!-- This DIV is the target container for an image.  -->
+    <div class="map">
+      <img class="overlap position-1 smaller" src="https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png">
+      <img class="overlap position-2 smaller overlay" src="https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png">
+      <img class="overlap position-3 overlay-2" src='http://samples.msdn.microsoft.com/workshop/graphics/earglobe.gif' />
+    </div>
+
+    <div id="browser_css_mode">asdf</div>
+
+  </body>
+</html>

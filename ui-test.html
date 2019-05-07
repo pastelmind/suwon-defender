@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="MSThemeCompatible" content="yes">
+
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css" />
+    <style type="text/css">
+
+#menu_bar {
+  font-weight: bold;
+}
+
+#menu_bar > li
+{
+  display: inline-block;
+}
+
+.menu--active, .menu--active:hover {
+  color: black;
+  font-weight: bold;
+  background-color: #999;
+  background-image: none;
+}
+.menu--active:hover {
+  background-color: #ccc;
+}
+
+.ui-menu .ui-menu-item.boolean,
+.ui-menu .ui-menu-item.option {
+  padding-left: 25px;
+}
+
+    </style>
+
+    <script type="text/javascript" src="lib/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+
+/* global $ */
+
+$(function () {
+  SuwonDefender.menu.init();
+});
+
+var SuwonDefender = {
+  settings: {}
+};
+
+SuwonDefender.menu = {
+  init: function init() {
+    var self = this;
+
+    $('#menu_bar').menu({
+      icons: { submenu: "ui-icon-carat-1-s" },
+      position: { my: 'left top', at: 'left bottom' },
+      select: function (event, ui) {
+        if (ui.item.hasClass('boolean')) {
+          self.activateMenuItem(ui.item, !ui.item.hasClass('menu--active'));
+        }
+        else if (ui.item.hasClass('option')) {
+          self.activateMenuItem(ui.item, true);
+          self.activateMenuItem(ui.item.siblings(), false);
+          ui.item.parent().siblings('.selected-option').text(ui.item.text());
+        }
+      }
+    });
+    $('.boolean, .option').prepend('<span class="ui-icon ui-icon-blank"></span>');
+
+    this.resizeMenu();
+
+    $(window).resize(this.resizeMenu);
+  },
+
+  resizeMenu: function resizeMenu() {
+    var docWidth = $(document).width();
+    var $menuItems = $('#menu_bar').children('li');
+
+    var recommendedWidth = Math.floor(docWidth / $menuItems.length) - 8;
+    // $menuItems.outerWidth(recommendedWidth);
+    $menuItems.children('ul').addBack().outerWidth(recommendedWidth);
+  },
+
+  activateMenuItem: function activateMenuItem(menuItem, bActivate) {
+    if (arguments.length < 2)
+      bActivate = true;
+    menuItem.toggleClass('menu--active', bActivate);
+    menuItem.children('.ui-icon')
+      .toggleClass('ui-icon-blank', !bActivate)
+      .toggleClass('ui-icon-check', bActivate);
+  }
+};
+
+    </script>
+    <script type="text/javascript" src="data/imagemap.js"></script>
+    <script type="text/javascript" src="data/menu.js"></script>
+
+    <title>Suwon Defender</title>
+  </head>
+  <body>
+    <div id="menu_bar"></div>
+    <!--
+    <ul id="menu_bar">
+      <li><span class="selected-option">DEFCON</span>
+        <ul>
+          <li class="option">DEFCON 5</li>
+          <li class="option">DEFCON 4</li>
+          <li class="option">DEFCON 3</li>
+          <li class="option">DEFCON 2</li>
+          <li class="option">DEFCON 1</li>
+        </ul>
+      </li>
+      <li><span class="selected-option">WATCHCON</span>
+        <ul>
+          <li class="option">WATCHCON 5</li>
+          <li class="option">WATCHCON 4</li>
+          <li class="option">WATCHCON 3</li>
+          <li class="option">WATCHCON 2</li>
+          <li class="option">WATCHCON 1</li>
+        </ul>
+      </li>
+      <li class="boolean">경계 상태</li>
+      <li class="boolean">긴급 상태</li>
+      <li class="boolean">특수 상태</li>
+      <li>주요 시설
+        <ul>
+          <li class="boolean">행정 시설</li>
+          <li class="boolean">관광 시설</li>
+          <li class="boolean">교통 시설</li>
+        </ul>
+      </li>
+      <li><span class="selected-option">INFOCON</span>
+        <ul>
+          <li class="option">INFOCON 5</li>
+          <li class="option">INFOCON 4</li>
+          <li class="option">INFOCON 3</li>
+          <li class="option">INFOCON 2</li>
+          <li class="option">INFOCON 1</li>
+        </ul>
+      </li>
+    </ul>-->
+    <div id="defense_map">
+    </div>
+  </body>
+</html>

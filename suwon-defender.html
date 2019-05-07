@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="MSThemeCompatible" content="yes">
+
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/suwon-defender.css" type="text/css" />
+
+    <script type="text/javascript" src="lib/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/suwon-defender.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/imagemap.js"></script>
+    <script type="text/javascript">
+
+/* global $, SuwonDefender */
+
+$(function () {
+  // SuwonDefender.createImageMap('boundary', SuwonDefender.imageMapCoordinates);
+  SuwonDefender.initializeImageMaps();
+
+  // var $menu = SuwonDefender.createMenu(SuwonDefender.settings.menu).appendTo('#menu_bar');
+  SuwonDefender.initializeMenu('#menu_bar');
+
+  SuwonDefender.initializeIcons('#icon_bar', '#map');
+  SuwonDefender.initializeIconGroupDialogs();
+
+  var $iconBar = $('#icon_bar').on('mouseleave', function () {
+    $iconBar.stop(false, true).hide({ effect: 'slide', direction: 'down' }, 'fast');
+  });
+  $('#icon_bar_handle').on('mouseenter', function () {
+    $iconBar.stop(false, true).show({ effect: 'slide', direction: 'down' }, 'fast');
+  });
+
+  $('#log').text(SuwonDefender.getDocumentModeString());
+});
+
+    </script>
+
+    <title>Suwon Defender</title>
+  </head>
+  <body>
+    <div id="screen">
+      <div id="menu_bar">
+        <ul>
+          <li class="optiongroup">
+            <span class="menu-item-text">기본언어설정</span>
+            <ul>
+              <li class="option">없음</li>
+              <li class="option">언어설정 &#8546;-S</li>
+              <li class="option">언어설정 &#8546;-T</li>
+              <li class="option">언어설정 &#8546;-A</li>
+              <li class="option">언어설정 &#8545;</li>
+              <li class="option">언어설정 &#8544;</li>
+              <li class="option">ADV-&#8546;</li>
+              <li class="option">ADV-&#8545;</li>
+              <li class="option">ADV-&#8544;</li>
+            </ul>
+          </li>
+          <li class="optiongroup">
+            <span class="menu-item-text">사용언어형태</span>
+            <ul>
+              <li class="option">없음</li>
+              <li class="option">사용언어 S형</li>
+              <li class="option">사용언어 T형</li>
+              <li class="option">사용언어 A형</li>
+            </ul>
+          </li>
+          <li class="optiongroup">
+            <span class="menu-item-text">테스트용</span>
+            <ul>
+              <li class="option">없음</li>
+              <li class="option">가나다라</li>
+              <li class="option">마바사아</li>
+            </ul>
+          </li>
+          <li class="optiongroup">
+            <span class="menu-item-text">테스트용설정</span>
+            <ul>
+              <li class="option">해제</li>
+              <li class="option">설정 자유</li>
+              <li class="option">설정 제한</li>
+              <li class="option">설정 보류</li>
+            </ul>
+          </li>
+          <li class="boolean">
+            <span class="menu-item-text">불리언플래그</span>
+          </li>
+          <li class="optiongroup">
+            <span class="menu-item-text">태양열발전</span>
+            <ul>
+              <li class="option">해제</li>
+              <li class="option">직광 "전"</li>
+              <li class="option">직광 "후"</li>
+              <li class="option">직광 "대기"</li>
+            </ul>
+          </li>
+          <li class="booleangroup">
+            <span class="menu-item-text">SSSSSS</span>
+            <ul>
+              <li class="boolean" data-toggle-id="offices">BBBB</li>
+              <li class="boolean" data-toggle-id="yellowdots">지역명</li>
+              <li class="boolean" data-toggle-id="yellowdots">??????????</li>
+              <li class="boolean" data-toggle-id="yellowdots">??????????</li>
+            </ul>
+          </li>
+          <li class="boolean">
+            <span class="menu-item-text">FOOD NET</span>
+          </li>
+          <li class="boolean" data-toggle-id="boundary" data-toggle-imagemap="boundary-imagemap">
+            <span class="menu-item-text">발전소지도</span>
+          </li>
+          <li class="booleangroup">
+            <span class="menu-item-text">개별 설정</span>
+            <ul>
+              <li class="boolean" data-toggle-id="door1">문 1</li>
+              <li class="boolean" data-toggle-id="door2">문 2</li>
+              <li class="boolean" data-toggle-id="door3">문 3</li>
+              <li class="boolean" data-toggle-id="door4">문 4</li>
+              <li class="boolean" data-toggle-id="door5">문 5</li>
+              <li class="boolean" data-toggle-id="door6">문 6</li>
+              <li class="boolean" data-toggle-id="door7">문 7</li>
+              <li class="boolean" data-toggle-id="door8">문 8</li>
+              <li class="boolean" data-toggle-id="door9">문 9</li>
+              <li class="boolean" data-toggle-id="window1">창문 1</li>
+              <li class="boolean" data-toggle-id="window2">창문 2</li>
+              <li class="boolean" data-toggle-id="window3">창문 3</li>
+              <li class="boolean" data-toggle-id="window4">창문 4</li>
+            </ul>
+          </li>
+          <li class="boolean" data-toggle-id="boundary" data-toggle-imagemap="boundary-imagemap">
+            <span class="menu-item-text">공동생활구역</span>
+          </li>
+        </ul>
+      </div>
+      <div id="map">
+        <img class="map-image" src="images/maps/suwon-map.jpg" id="base-map">
+        <img class="map-image toggle image-map-click-target" id="boundary-imagemap" src="images/maps/suwon-map.jpg" usemap="#boundary">
+        <img class="map-image toggle" id="boundary" src="images/maps/suwon-map-boundary.png">
+        <img class="map-image toggle overlay" id="suwon-gu-1" src="images/maps/suwon-gu-1.png">
+        <img class="map-image toggle overlay" id="suwon-gu-2" src="images/maps/suwon-gu-2.png">
+        <img class="map-image toggle overlay" id="suwon-gu-3" src="images/maps/suwon-gu-3.png">
+        <img class="map-image toggle overlay" id="suwon-gu-4" src="images/maps/suwon-gu-4.png">
+        <img class="map-image toggle" id="offices" src="images/maps/suwon-offices.png">
+        <img class="map-image toggle" id="yellowdots" src="images/maps/suwon-yellowdots.png">
+      </div>
+      <div id="icon_bar">
+        <ul>
+          <li><img class="icon" src="images/icons/biohazard.png">생물학</li>
+          <li><img class="icon" src="images/icons/enemy.png">적군</li>
+          <li><img class="icon" src="images/icons/bombshell.png">불발탄</li>
+          <li><img class="icon" src="images/icons/fire.png">화재</li>
+          <li><img class="icon" src="images/icons/gas.png">피폭</li>
+          <li><img class="icon" src="images/icons/injury.png">환자</li>
+          <li><img class="icon" src="images/icons/death.png">사망</li>
+          <li><img class="icon" src="images/icons/radiation.png">방사능</li>
+          <li><img class="icon" src="images/icons/warning.png">주의</li>
+        </ul>
+      </div>
+      <div id="icon_bar_handle">?</div>
+    </div>
+    <div id="log"></div>
+    <map name="boundary">
+      <area shape="poly" coords="" data-toggle-id="suwon-gu-1">
+      <area shape="poly" coords="" data-toggle-id="suwon-gu-2">
+      <area shape="poly" coords="" data-toggle-id="suwon-gu-3">
+      <area shape="poly" coords="" data-toggle-id="suwon-gu-4">
+    </map>
+
+    <div class="icongroup-dialog">
+
+    </div>
+  </body>
+</html>
+
